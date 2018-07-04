@@ -77,7 +77,8 @@
                 </div>
             @endif
 
-            <div class="content">
+            <div class="content" id="app">
+                    <example-component/>
                 <div class="title m-b-md">
                     Laravel
                 </div>
@@ -92,4 +93,5 @@
             </div>
         </div>
     </body>
+<script src="{{asset('/js/app.js')}}"></script>
 </html>
