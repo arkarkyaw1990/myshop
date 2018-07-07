@@ -255,7 +255,6 @@
               <!-- Default Welcome Message -->
               <div class="welcome-msg ">Welcome to Fancy online shopping </div>
             </div>
-            
             <!-- top links -->
             <div class="headerlinkmenu col-lg-8 col-md-7 col-sm-8 col-xs-12">
               <div class="links">
@@ -838,7 +837,6 @@
   </div>
   <!-- End home section --> 
   <!-- service section -->
-  
   <div class="jtv-service-area">
     <div class="container">
       <div class="row">
