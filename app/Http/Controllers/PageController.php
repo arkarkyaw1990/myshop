@@ -8,6 +8,10 @@ class PageController extends Controller
 {
     public function index()
     {
-    	return view('home.index');
+    	return view('home.pages.index');
+    }
+    public function products()
+    {
+        return view('home.pages.products');
     }
 }

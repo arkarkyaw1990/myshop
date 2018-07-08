@@ -8,6 +8,6 @@ $factory->define(App\Models\Productphoto::class, function (Faker $faker) {
         'product_id' => function(){
     		return Product::all()->random();
     	},
-    	'path' => $faker->imageUrl($width = 800, $height = 800),
+    	'path' => $faker->imageUrl($width = 200, $height = 200),
     ];
 });

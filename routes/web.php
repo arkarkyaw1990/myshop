@@ -12,6 +12,7 @@
 */
 
 Route::get('/', 'PageController@index');
+Route::get('/products', 'PageController@products');
 
 Auth::routes();
 
