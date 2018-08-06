@@ -19,6 +19,7 @@ class ProductCollection extends JsonResource
             'name' => $this->name,
             'price' => '$'.$this->price,
             'images' => ProductphotoCollection::collection($this->images),
+            'quick_overview' => $this->quick_overview,
             'href' => [
                 'link' => route('products.show', $this->slug)
             ]

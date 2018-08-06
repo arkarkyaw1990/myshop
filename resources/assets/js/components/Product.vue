@@ -11,8 +11,8 @@
     <div class="toolbar">
         <div class="view-mode">
         <ul>
-            <li class="active"> <a href="shop_grid.html"> <i class="fa fa-th"></i> </a> </li>
-            <li> <a href="shop_list.html"> <i class="fa fa-th-list"></i> </a> </li>
+            <li @click="gridView=true" :class="{active: gridView}"> <a href="#"> <i class="fa fa-th"></i> </a> </li>
+            <li @click="gridView=false" :class="{active: !gridView}"> <a href="#"> <i class="fa fa-th-list"></i> </a> </li>
         </ul>
         </div>
         <div class="sorter">
@@ -27,21 +27,29 @@
         </div>
         <div class="short-by page">
             <label>Show:</label>
-            <select>
-            <option selected="selected">18</option>
+            <select v-model='perPage'>
+            <option selected="selected">12</option>
             <option>20</option>
-            <option>25</option>
-            <option>30</option>
+            <option>28</option>
+            <option>36</option>
             </select>
         </div>
         </div>
     </div>
-    <div class="product-grid-area">
+    <div v-if="gridView" class="product-grid-area">
         <ul class="products-grid">
             <product-grid 
                 v-for="product in products" 
                 :key="product.id" 
                 :product="product"></product-grid>
+        </ul>
+    </div>
+    <div v-else class="product-list-area">
+        <ul class="products-list" id="products-list">
+            <product-list
+                v-for="product in products"
+                :key="product.id"
+                :product="product"></product-list>
         </ul>
     </div>
     <div class="pagination-area ">
@@ -50,28 +58,12 @@
         :fetchPaginateUsersFn="fetchPaginateUsers"></pagination>
     </div>
 </div>
-
-    <!-- <div>
-        <table  v-for="product in products" :key="product.id">
-            <tr>
-                <td>{{ product.name }}</td>
-                <td>{{ product.price }}</td>
-            </tr>
-        </table>
-        <div class="pagination">
-            <button class="btn btn-default" @click="fetchPaginateUsers(pagination.prev_page_url)" :disabled="!pagination.prev_page_url">Previos</button>
-        </div>
-        <span>Page {{pagination.current_page}} of {{pagination.last_page}}</span>
-        <div class="pagination">
-            <button class="btn btn-default" @click="fetchPaginateUsers(pagination.next_page_url)" :disabled="!pagination.next_page_url">Next</button>
-        </div>
-    </div> -->
-      
 </template>
 
 <script>
 
 import ProductGrid from './Productgrid.vue';
+import ProductList from './Productlist.vue';
 import Pagination from './Pagination.vue';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.min.css';
@@ -79,19 +71,30 @@ export default {
     data(){
         return{
             isLoading: false,
+            gridView: true,
             products: [],
             links: [],
+            perPage: 12,
+            search: window.location.search,
             url: '/api/products',
             pagination: []
         }
     },
-    mounted(){
-
+    created(){
+        this.url = '/api/products'+this.search;
         this.getProducts()
 
     },
+    watch: {
+        perPage: function() {
+            this.url = '/api/products'+this.search+'&pp='+this.perPage;
+            this.getProducts();
+        }
+    },
     methods: {
         getProducts(){
+        
+            console.log(this.url);
             let $this = this;
             this.isLoading = true;
             axios.get(this.url).then(response => {
@@ -106,16 +109,17 @@ export default {
                 last_page: data.meta.last_page,
                 next_page_url: data.links.next,
                 prev_page_url: data.links.prev
-            }
-            this.pagination = pagination
+            };
+            this.pagination = pagination;
         },
         fetchPaginateUsers(url){
-            this.url = url
-            this.getProducts()
+            this.url = url + this.search.replace('?', '&') + '&pp='+this.perPage;
+            this.getProducts();
+            
           
         }
     },
-    components: {ProductGrid, Pagination, Loading}
+    components: {ProductGrid, ProductList, Pagination, Loading}
    
 }
 </script>

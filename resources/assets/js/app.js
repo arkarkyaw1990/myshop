@@ -16,6 +16,15 @@ window.Vue = require('vue');
  */
 
 import Product from './components/Product.vue';
+
+import VueLazyLoad from 'vue-lazyload';
+
+Vue.use(VueLazyLoad, {
+    preload:0.3,
+    loading: 'images/loading.gif',
+    attempt:1
+});
+
 const app = new Vue({
     el: '#page',
     components: {Product}
